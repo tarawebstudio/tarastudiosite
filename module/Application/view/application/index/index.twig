@@ -1,0 +1,18 @@
+{% extends 'layout/layout_main.twig' %}
+
+
+{% block content %}
+
+<section class="section">{{ param }}</section>
+{% for page in pages %}
+    
+   
+    <section id="{{ page.link }}" class="{{ page.sections_class }} section offset-header">
+        <div class="container">
+                {{ page.content|raw }}
+          </div>      
+    </section>
+
+{% endfor %}
+{% endblock content %}
+
