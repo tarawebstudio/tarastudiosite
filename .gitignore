@@ -10,3 +10,6 @@ nbproject
 composer.lock
 vendor
 composer.phar
+error.log
+access.log
+php_error.log
