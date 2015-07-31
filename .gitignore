@@ -13,3 +13,4 @@ composer.phar
 error.log
 access.log
 php_error.log
+/config/autoload/*
