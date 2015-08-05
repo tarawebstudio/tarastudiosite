@@ -27,7 +27,7 @@ class Pages extends TableGateway
     { 
 
         $query = "
-            SELECT * from t_pages order by num";
+            SELECT * from t_pages ".(($id)? "where id='".$id."'": '')."order by num";
 
     
                             
@@ -35,6 +35,59 @@ class Pages extends TableGateway
 		 $results = $this->FetchAll($adapter, $query);                            
         return $results;
     } 
+
+
+  
+  public function updatePages($data=null)
+    { 
+         $query = sprintf("UPDATE t_pages SET title='%s', content='%s', num='%s' ".(($data) ? " WHERE id='%s'" : ''),
+              $data['title'],
+              $data['content'],
+              $data['num'],
+              $data['id']
+            );
+  
+                            
+         $adapter = $this->getAdapter();
+                                    
+         $statement = $adapter->createStatement($query);
+         $results = $statement->execute();
+         
+        return $results;
+    } 
+
+  
+  public function insertPages($data)
+    {
+         $query = sprintf("INSERT INTO t_pages (title,content,num) VALUES ('%s', '%s', '%s')",
+           
+              $data['title'],
+              $data['content'],
+              $data['num']
+              
+            );
+
+                            
+         $adapter = $this->getAdapter();
+                                    
+         $statement = $adapter->createStatement($query);
+         $results = $statement->execute();
+         
+        return $results;
+    }   
+      
+  public function delPages($id)
+    {
+         $query = sprintf("DELETE FROM t_pages WHERE id='%s'",$id);
+
+                            
+         $adapter = $this->getAdapter();
+                                    
+         $statement = $adapter->createStatement($query);
+         $results = $statement->execute();
+         
+        return $results;
+    }     
     
    function FetchAll($adapter, $sql, $params=null)
     {

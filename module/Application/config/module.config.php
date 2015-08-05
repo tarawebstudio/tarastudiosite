@@ -11,11 +11,11 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-               'type' => 'Zend\Mvc\Router\Http\Regex',
- 'options' => array(
- 'regex' => '/(?<slug>[a-zA-Z0-9_-]*)',
- 'spec' => '/%slug%',
-                    'defaults' => array(
+               'type' => 'Literal',
+               'options' => array(
+               'route' => '/',
+               
+                'defaults' => array(
                         'controller' => 'Application\Controller\Index',
                         'action'     => 'index',
                     ),
@@ -34,6 +34,21 @@ return array(
                         'action'        => 'index',
                     ),
                 ),
+
+                'may_terminate' => true,
+                
+                  'child_routes' => array(
+                    // Segment route for viewing one blog post
+                    'pages' => array(
+                                    'type' => 'Zend\Mvc\Router\Http\Regex',
+                                    'options' => array(
+                                         'regex' => '/(?<slug>[a-zA-Z0-9_-]+)/(?<id>[0-9]*)',
+                                         'spec' => '/%slug%/%id%',                        
+                                         'defaults' => array(
+                                                'action' => 'index',
+                            ),
+                        ),
+                    ) ,)                 
 
             ),
             // The following is a route to simplify getting started creating
@@ -148,6 +163,7 @@ return array(
             'layout/layout_main'           => __DIR__ . '/../view/layout/layout_main.twig',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/403'               => __DIR__ . '/../view/error/403.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
