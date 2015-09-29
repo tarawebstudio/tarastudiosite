@@ -9,13 +9,15 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
-        'TestGuardModule',
+        
         'ZfcTwig',
-        'ZendDeveloperTools',
-        'BjyProfiler',
         'ZfcBase',
-        'ZfcUser',
+        'ZfcUser', 
+        'ZendDeveloperTools',
+        'BjyProfiler', 
         'BjyAuthorize',
+        'ZfcAdmin',
+        'Admin'      
     ),
 
     // These are various options for the listeners attached to the ModuleManager

@@ -11,55 +11,67 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\Smtp as SmtpTransport;
+use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Part as MimePart;
+use Zend\Mail\Transport\SmtpOptions;
 
 class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-		//$usersSrv    = $this -> getServiceLocator()->get('users');
+       		
 		$pagesSrv    = $this -> getServiceLocator()->get('pages');
-		
-        $param = $this->getEvent()->getRouteMatch()->getParam('slug');
         $pages = array();
         $pages = $pagesSrv ->  getPages(); 
-       
-		
-	/*		
-		foreach ($pages as $key=>$page) {
-			//var_dump($page);echo '<br />-------------------------------------------------<br/>';
-			echo '<br />-------------------1 variant -page[content]-----------------------------<br/>'.$page['content'];
-			echo $pages[$key]['content'] = htmlspecialchars_decode($page['content']).'<br />-------------------------------------------------<br/>';
-			
-			}
-      */  
         return new ViewModel(array(
-                'param'  => $param,
+             
                 'pages'  => $pages
         ));
     }
-    public function viewAction()
-    {
-		
-		
-        return new ViewModel();
-    }   
-        public function view1Action()
-    {
-		
-		echo $this->getEvent()->getRouteMatch()->getParam('slug1');
-        return new ViewModel();
+
+    public function msgAction(){
+
+        //amount=%241000+-+%243299   firstName=name    company=company   email=asd%40gmail.com    phone=asda%40asdas.xcv  msg_text=
+        //amount=%241000+-+%243299   firstName=asdasdasd  company=asdasdasd  email=asd%40gmail.com  phone=123123123123  msg_text=asdasdasdasdasd#
+
+        //может быть забираем сообщение аяксом, говорим спасибо, ждем 5 сек, убираем "спасибо", очищаем форму
+
+
+
+//////////
+$systemSrv    = $this -> getServiceLocator()->get('system');
+
+$message = new Message();
+$message->addTo('vikitina@gmail.com')
+    ->addFrom('vikitina@yandex.ru')
+    ->setSubject('Test send mail using ZF2');
+    
+// Setup SMTP transport using LOGIN authentication
+$transport = new SmtpTransport();
+$options   = new SmtpOptions(array(
+    'host'              => 'smtp.gmail.com',
+    'connection_class'  => 'login',
+    'connection_config' => array(
+        'ssl'       => 'tls',
+      
+        'username' => $systemSrv->getSystemByName('email_username'),
+        'password' => $systemSrv->getSystemByName('email_passw')
+    ),
+    'port' => 587,
+));
+
+$html = new MimePart('<b>heii, <i>sorry</i>, i\'m going late</b>');
+$html->type = "text/html";
+
+$body = new MimeMessage();
+$body->addPart($html);
+
+$message->setBody($body);
+
+$transport->setOptions($options);
+$transport->send($message);
+        
     }
-         public function menuAction()
-    {
-		$usersSrv    = $this -> getServiceLocator()->get('users');
-        
-        
-        $users = $usersSrv ->  getUsers(); 
-        
-        return (array(
-                
-                'users'  => $users
-        ));
-    }   
-        
 }

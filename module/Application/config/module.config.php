@@ -11,45 +11,14 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-               'type' => 'Literal',
-               'options' => array(
-               'route' => '/',
-               
-                'defaults' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/',
+                    'defaults' => array(
                         'controller' => 'Application\Controller\Index',
                         'action'     => 'index',
                     ),
                 ),
-            ),
-           'admin' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    // Change this to something specific to your module
-                    'route'    => '/admin',
-                    'defaults' => array(
-                        // Change this value to reflect the namespace in which
-                        // the controllers for your module are found
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Admin',
-                        'action'        => 'index',
-                    ),
-                ),
-
-                'may_terminate' => true,
-                
-                  'child_routes' => array(
-                    // Segment route for viewing one blog post
-                    'pages' => array(
-                                    'type' => 'Zend\Mvc\Router\Http\Regex',
-                                    'options' => array(
-                                         'regex' => '/(?<slug>[a-zA-Z0-9_-]+)/(?<id>[0-9]*)',
-                                         'spec' => '/%slug%/%id%',                        
-                                         'defaults' => array(
-                                                'action' => 'index',
-                            ),
-                        ),
-                    ) ,)                 
-
             ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
@@ -66,22 +35,7 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                
-'child_routes' => array(
-                    // Segment route for viewing one blog post
-                    'post' => array(
-                        'type' => 'segment',
-                        'options' => array(
-                            'route' => '/[:slug]',
-                            'constraints' => array(
-                                'slug' => '[a-zA-Z0-9_-]+',
-                            ),
-                            'defaults' => array(
-                                'action' => 'index',
-                            ),
-                        ),
-                    ) ,)               
-              /*  'child_routes' => array(
+                'child_routes' => array(
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
@@ -94,8 +48,34 @@ return array(
                             ),
                         ),
                     ),
-                ),*/
+                ),
             ),
+
+
+           'application\ajax' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/application/ajax',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Ajax',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+
+           'msg' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/msg',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'msg',
+                    ),
+                ),
+            ),           
+
+          
         ),
     ),
     'service_manager' => array(
@@ -103,7 +83,7 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
-        'factories' => array(
+         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
        
        
@@ -133,6 +113,16 @@ return array(
                     $sm->get('Zend\Db\Adapter\Adapter')
                 );
             },
+            'message' => function ($sm) {
+                return new \Application\Model\Messages(
+                    $sm->get('Zend\Db\Adapter\Adapter')
+                );
+            }, 
+           'system' => function ($sm) {
+                return new \Application\Model\System(
+                    $sm->get('Zend\Db\Adapter\Adapter')
+                );
+            }, 
          
                      
     ),
@@ -150,7 +140,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Admin' => 'Application\Controller\AdminController',
+            'Application\Controller\Ajax' => 'Application\Controller\AjaxController'
         ),
     ),
     'view_manager' => array(
@@ -160,15 +150,22 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout_main'           => __DIR__ . '/../view/layout/layout_main.twig',
+            'layout/layout'           => __DIR__ . '/../view/layout/layout.twig',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/403'               => __DIR__ . '/../view/error/403.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.twig',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
+            'errors/403'              => __DIR__ . '/../view/error/403.twig',
+            'user/login'              => __DIR__ . '/../view/application/user/login.twig',
+
+        ), 
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        'zfc-user' => __DIR__ . '/../view',
         ),
+        'strategies' => array (            
+                                           
+                        'ViewJsonStrategy' 
+                ),        
     ),
     // Placeholder for console routes
     'console' => array(
@@ -177,21 +174,54 @@ return array(
             ),
         ),
     ),
-    'view_helpers' => array(
-/*
-               'invokables' => array(
 
-                        'mainMenu' => 'Application\View\Helper\MainMenu'
-              )*/
+   'view_helpers' => array(
+
               
      'factories' => array(
                 'MainMenuHelper' => function($sm) {
                     $helper = new \Application\View\Helper\MainMenuHelper();
-                    //$helper->getMainMenu($sm, 'Users\Model\Users');>getServiceLocator()----  -> getServiceLocator()->get('users')
                     $helper->getMainMenu($sm -> getServiceLocator()->get('pages'));
 
                     return $helper;
-                },              
+                },   
+
+
+               'Messages' => function($sm) {
+                    $helper = new \Application\View\Helper\Messages();
+                    $helper->getMessages($sm -> getServiceLocator()->get('message'));
+
+                    return $helper;
+                },                     
+               'System' => function($sm) {
+                    $helper = new \Application\View\Helper\System();
+                    $helper->getSystemVars($sm -> getServiceLocator()->get('system'));
+
+                    return $helper;
+                },   
+                 
+                'UnreadMessages'=> function($sm) {
+                    $helper = new \Application\View\Helper\UnreadMessages();
+                    $helper->getUnreadMessages($sm -> getServiceLocator()->get('message'));
+
+                    return $helper;
+                }, 
+                //SystemEmail     
+              'SystemEmail'=> function($sm) {
+                    $helper = new \Application\View\Helper\SystemEmail();
+                    $helper->getSystemEmail($sm -> getServiceLocator()->get('system'));
+
+                    return $helper;
+                }, 
+             'SystemAddress'=> function($sm) {
+                    $helper = new \Application\View\Helper\SystemEmail();
+                    $helper->getSystemAddress($sm -> getServiceLocator()->get('system'));
+
+                    return $helper;
+                },                 
+
         )
+
+
         ),
 );

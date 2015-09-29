@@ -12,7 +12,7 @@ $settings = array(
      * Please specify the DI alias for the configured Zend\Db\Adapter\Adapter
      * instance that ZfcUser should use.
      */
-   'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+    //'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
 
     /**
      * User Model Entity Class
@@ -21,7 +21,7 @@ $settings = array(
      * instead of the default one provided. Default is ZfcUser\Entity\User.
      * The entity class should implement ZfcUser\Entity\UserInterface
      */
-    'user_entity_class' => 'ZfcUser\Entity\User',
+    //'user_entity_class' => 'ZfcUser\Entity\User',
 
     /**
      * Enable registration
@@ -30,7 +30,7 @@ $settings = array(
      *
      * Accepted values: boolean true or false
      */
-    //'enable_registration' => true,
+  'enable_registration' => true,
 
     /**
      * Enable Username
@@ -40,7 +40,7 @@ $settings = array(
      *
      * Accepted values: boolean true or false
      */
-    //'enable_username' => false,
+    'enable_username' => true,
 
     /**     
      * Authentication Adapters
@@ -60,7 +60,7 @@ $settings = array(
      *
      * Accepted values: boolean true or false
      */
-    //'enable_display_name' => true,
+    'enable_display_name' => true,
 
     /**
      * Modes for authentication identity match
@@ -71,7 +71,7 @@ $settings = array(
      * Default value: array containing 'email'
      * Accepted values: array containing one or more of: email, username
      */
-    //'auth_identity_fields' => array( 'email' ),
+    'auth_identity_fields' => array( 'email', 'username' ),
 
     /**
      * Login form timeout
@@ -118,7 +118,7 @@ $settings = array(
      * this to configure which Zend\Captcha adapter to use, and the options to
      * pass to it. The default uses the Figlet captcha.
      */
-    'form_captcha_options' => array(
+   'form_captcha_options' => array(
         'class'   => 'figlet',
         'options' => array(
             'wordLen'    => 5,
@@ -142,7 +142,7 @@ $settings = array(
 	 * Default value: 'zfc-user/user/login.phtml'
      * Accepted values: string path to a view script
 	 */
-    //'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+    //'user_login_widget_view_template' => 'application/user/login.twig',
 
     /**
      * Login Redirect Route
@@ -153,7 +153,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    //'login_redirect_route' => 'zfcuser',
+   'login_redirect_route' => 'home',
 
     /**
      * Logout Redirect Route
@@ -163,7 +163,7 @@ $settings = array(
      * Default value: 'zfcuser/login'
      * Accepted values: A valid route name within your application
      */
-    //'logout_redirect_route' => 'zfcuser/login',
+    'logout_redirect_route' => 'home',
 
     /**
      * Password Security
