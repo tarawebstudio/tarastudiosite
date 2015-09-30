@@ -13,23 +13,27 @@ html,
 body{
 
   height:100%;
+
 }
 
 .main_container{
 
   min-height:100%;
   padding-bottom:53px;
+  overflow: hidden;
 }
 .footer{
   margin-top:-53px;
   height:53px;
 }
+
 body {
   font-family: 'Lato', arial, sans-serif;
   color: #444444;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 h1,
 h2,
@@ -678,14 +682,16 @@ width:30%;
 }
 .promo_info .container{
 background: #0c86ae;
-  height:48px;
+  /*height:48px;*/
   position:absolute;
-  bottom:0;
+  bottom:-100px;
   overflow:hidden;
+  padding-bottom:12px;
 }
 .promo_info.open .container{
-    height:177px;
-    transition: height 1.7s ease;
+   /* height:177px;*/
+   bottom:0;
+    transition: bottom 1.7s ease;
 
 }
 .promo_info.opened .container{

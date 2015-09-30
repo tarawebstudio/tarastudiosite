@@ -13,7 +13,7 @@ return array(
         'ZfcTwig',
         'ZfcBase',
         'ZfcUser', 
-        'ZendDeveloperTools',
+       // 'ZendDeveloperTools',
         'BjyProfiler', 
         'BjyAuthorize',
         'ZfcAdmin',

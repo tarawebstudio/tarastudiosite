@@ -7,8 +7,21 @@ jQuery(document).ready(function($) {
 
   $('#email').text(v_email);
   $('#address').html(v_address);
-        //var w_height = jQuery(window).height() - 65 - 70;
-        //$('#promo').height(w_height+'px');
+$('.promo_info').css('height',$('.promo_info .container').height()+20);
+var pad = $(window).height() - ($('#header').height() + $('#for_logo_container').height() + $('#slogan').height()+$('.promo_info .container').height()+30);
+var pad1= pad/2;
+/*
+console.log($(window).height());
+console.log($('#header').height());
+console.log($('#for_logo_container').height());
+console.log($('#slogan').height());
+console.log($('.promo_info').height());
+console.log($('#header').height() + $('#for_logo_container').height() + $('#slogan').height() + $('.promo_info').height());
+*/
+marg = pad1 + 'px';
+$('#for_logo_container').css('margin-top',marg);
+$('.promo_info').css('margin-top',marg);
+//console.log(marg);
 
           $( "#slider-range" ).slider({
                  range: true,
