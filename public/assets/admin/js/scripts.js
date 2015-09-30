@@ -175,6 +175,7 @@ $('.system_list').on('click',function(event){
        $('#system_modal').modal('show');
        $('#system_name').text($(this).text());
        $('#system_new_value').val($(this).attr('data-content'));
+       $(this).addClass('blockig_for_processing');
        $('#system_new_value').attr('data-id', $(this).attr('data-id'));
 
 
@@ -207,12 +208,22 @@ $('#system_save_new_value').on('click',function(event){
                                                    </div>
 
                */
+               edited_elem = $('.blockig_for_processing');
+               edited_elem.attr('data-content',$('#system_new_value').val()).removeClass('blockig_for_processing');
+
                $('#system_modal').modal('hide');
+
        
             });
 
 
 event.preventDefault();
+
+});
+$('#system_modal').on('hide', function(){
+
+               edited_elem = $('.blockig_for_processing');
+               edited_elem.attr('data-content',$('#system_new_value').val()).removeClass('blockig_for_processing');
 
 });
 
