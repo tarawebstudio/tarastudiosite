@@ -31,13 +31,7 @@ class IndexController extends AbstractActionController
         ));
     }
 
-    public function msgAction(){
-
-        //amount=%241000+-+%243299   firstName=name    company=company   email=asd%40gmail.com    phone=asda%40asdas.xcv  msg_text=
-        //amount=%241000+-+%243299   firstName=asdasdasd  company=asdasdasd  email=asd%40gmail.com  phone=123123123123  msg_text=asdasdasdasdasd#
-
-        //может быть забираем сообщение аяксом, говорим спасибо, ждем 5 сек, убираем "спасибо", очищаем форму
-
+public function msgAction(){
 
 
 //////////

@@ -433,7 +433,7 @@ pre code {
 }
 /* ======= Contact Section ======= */
 .contact {
-  padding: 80px 0;
+  padding-top: 80px;
   background: #17baef;
   color: #fff;
 }
