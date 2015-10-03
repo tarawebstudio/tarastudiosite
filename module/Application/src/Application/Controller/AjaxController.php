@@ -84,8 +84,8 @@ private function sendMail($data){
 
 
 	      $message = new Message();
-          $message->addTo('vikitina@gmail.com')
-                  ->addFrom('vikitina@yandex.ru')
+          $message->addTo('tarawebstudio@gmail.com')
+                  ->addFrom('tarawebstudio@gmail.ru')
                   ->setSubject('Сообщение с сайта TARA');
      
 // Setup SMTP transport using LOGIN authentication
