@@ -19,12 +19,22 @@ class IndexController extends AbstractActionController
     {
        		
 		$pagesSrv    = $this -> getServiceLocator()->get('pages');
-        $pages = array();
-        $pages = $pagesSrv ->  getPages(); 
+        $systemSrv    = $this -> getServiceLocator()->get('system');
+        $pages  = array();
+        $system = array();
+        $pages  = $pagesSrv ->  getPages(); 
+        $system = $systemSrv -> getSystem(); 
+
+        foreach ($system as $item){
+              $sys[$item['name']] = $item['data'];
+
+        }
+       // var_dump($sys);
         
         return new ViewModel(array(
              
-                'pages'  => $pages
+                'pages'  => $pages,
+                'system' => $sys
         ));
     }
 
